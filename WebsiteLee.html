@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!--Script for importing places library-->
-    <!--Key from Google map API-->
-    <!--places API is an API provided by google , i use it-->
+    <!--Script for importing Places library-->
+    <!--API Key and base map from Google map API-->
+    <!--The Places service is a self-contained library, separate from the main Maps JavaScript API code. -->
+      <!--The functions in the Places Library, Maps JavaScript API enable your application to search for places -->
     <script async                                        
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBR37WLsGvtMShsPnIECR0qd5FUeFlAZrA&libraries=places&callback=initMap">
     </script>
@@ -78,12 +79,12 @@
         <script>
 
             
-        //Google JavaScript API  to get longitude and latitude coordinates for a specific city
+        //Google Maps JavaScript API  to get longitude and latitude coordinates for a specific city --, Places Library methods
         //initialize search text and map --declaring variables for storing information
           var map1;
           var search_text1;
     
-          //it's like calling the map that has this id and adding to it these features
+          //it's like calling the map that has this id and adding these features to it
           function initMap(){
             map1 = new google.maps.Map(document.getElementById('map'), {
               center: {lat: -34.397, lng: 150.644},
@@ -97,15 +98,16 @@
             search_text1 = document.forms["map_form"]["location_text"].value;
             //building request from search_text 
             var request = {
-                query: search_text1,
-                fields: ['name'],
+                query: search_text1, //Restaurant
+                fields: ['name'],  //specifying the types of Place data to return.
             };
             //sending the request and receiving in callback
             var service = new google.maps.places.PlacesService(map1);
             service.textSearch(request, callback);
             return false;
           }
-          //callback function for places request
+          //callback function for places request 
+          //You must also pass a callback method to textSearch() to handle the results object and google.maps.places.PlacesServiceStatus response.
           function callback(results, status) {
             if (status == google.maps.places.PlacesServiceStatus.OK) {
                 //set map center to first result
