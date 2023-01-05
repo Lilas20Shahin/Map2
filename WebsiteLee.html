@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!--Script for importing places library-->
+    <!--Key from Google map API-->
+    <!--places API is an API provided by google , i use it-->
+    <script async                                        
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBR37WLsGvtMShsPnIECR0qd5FUeFlAZrA&libraries=places&callback=initMap">
+    </script>
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L Map</title>
+    <!--Bootstrap CSS-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      /*padding:space between element's content and its border - margin:add space outside of an element */
+      #map {
+        height: 80%;
+        width: 100%;
+        margin: auto;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    
+      }
+      #form_div{
+        margin-left: 550px;
+        width: 50%;
+        padding: 10px;
+      }
+
+    </style>
+</head> 
+<body>
+    <!--Bootstrap NavBar-->
+    <nav class="navbar bg-dark" data-bs-theme="dark" >
+        <div class="container-fluid" >
+          <a class="navbar-brand" >SiteMap</a>
+          <form class="d-flex" role="search">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form>
+        </div>
+    </nav>
+
+    <!--Bootstrap Card Quote-->
+    <div class="card">
+    <div class="card-header" style="height: 37px; ">
+        Quote
+      </div>
+    <div class="card-body" style="height: 60px;">
+        <blockquote class="blockquote mb-0">
+          <p><cite style="font-size: 15px; padding-top: 0.1px;">A map tells you where you've been, where you are, and where you're going — in a sense it's three tenses in one.” </cite></p>
+          <footer class="blockquote-footer">Peter Greenaway <cite title="Source Title">-Film Director </cite></footer>
+        </blockquote>
+      </div>                 
+    </div>
+
+    <!--Map structure-->
+    <div id="map"></div>
+    <!--Search Box structure-->
+        <div id="form_div">
+            <form id = "map_form" onsubmit="return searchForText()" >
+                <label>Location:</label>
+                <input type="text" id="location_text" name="location_text"  style="background-color:rgb(250, 247, 247); border-radius: 30px;">
+                <input type="submit" value="Search" style="color: rgb(247, 247, 250); background-color:rgb(145, 174, 231); border-radius: 10px; ">
+            </form>
+        </div>
+        
+        <script>
+
+            
+        //Google JavaScript API  to get longitude and latitude coordinates for a specific city
+        //initialize search text and map --declaring variables for storing information
+          var map1;
+          var search_text1;
+    
+          //it's like calling the map that has this id and adding to it these features
+          function initMap(){
+            map1 = new google.maps.Map(document.getElementById('map'), {
+              center: {lat: -34.397, lng: 150.644},
+              zoom: 10
+            });
+          }
+    
+          //Text Search Requests  
+          function searchForText(){
+            //get the inputed text from field
+            search_text1 = document.forms["map_form"]["location_text"].value;
+            //building request from search_text 
+            var request = {
+                query: search_text1,
+                fields: ['name'],
+            };
+            //sending the request and receiving in callback
+            var service = new google.maps.places.PlacesService(map1);
+            service.textSearch(request, callback);
+            return false;
+          }
+          //callback function for places request
+          function callback(results, status) {
+            if (status == google.maps.places.PlacesServiceStatus.OK) {
+                //set map center to first result
+                map1.setCenter(results[0].geometry.location);
+                //make a marker and add it to location
+                var marker = new google.maps.Marker({
+                    position: results[0].geometry.location,
+                    title:search_text1 //hover
+                });
+                marker.setMap(map1);
+            }
+        }
+        </script>
+
+        <!--Bootstrap Javascript link-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
+            
+</body>
+</html>
+
+
